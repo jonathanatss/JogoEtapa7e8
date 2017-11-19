@@ -2,14 +2,16 @@ var posX, posY; //bola
 var fx = 900;
 var fy = 600;
 
-var velocidade1 = 15;
-var velocidade2 = 17;
-var velocidade3 = 19;
-var velocidade4 = 21;
-var velocidade5 = 23;
+var velocidade1 = 20;
+var velocidade2 = 25;
+var velocidade3 = 30;
+var velocidade4 = 35;
+var velocidade5 = 40;
 
 var corBranco = true; 
 var trocouCor = false; 
+
+var tela = 1;
 
 // POSIÇÕES DE TODOS OS QUADRADOS
 
@@ -41,6 +43,18 @@ var tamBloco = 90;
 var vidas = 5;
 var pontos = 0;
 
+
+var vx = []; 
+var vy = [];
+var vdx = []
+var vdy = []
+var vtam = [];
+var qt = 30; 
+var vcorR = []; 
+var vcorG = [];
+var vcorB = [];
+var tamArea; 
+
 function preload(){
   //load images
   //bg = loadImage("");
@@ -62,8 +76,19 @@ cenario = [
  	];
  	
 function setup() {
- // bg = loadImage("image.jpg");
+  frameRate(30);
+  tamArea = 600; 
   createCanvas(fx, fy);
+  for ( i = 0; i < qt; i++) { 
+    vx[i] = random(0,tamArea); 
+    vy[i] = random(0,tamArea);
+    vtam[i] = random(5,15);
+    vdx[i] = random(-6,6);
+    vdy[i] = random(-6,6);
+    vcorR[i] = random(0,255);
+    vcorG[i] = random(0,255);
+    vcorB[i] = random(0,255);
+  }
   posX = 90;
   posY = 200;
   
@@ -71,71 +96,100 @@ function setup() {
 }
 
 function draw() {
- background (0);
-	if(vidas == 1) {	
+	if (tela == 1) {
+    background(0);
+    for ( i = 0; i < qt; i++) {
+    fill(vcorR[i], vcorG[i], vcorB[i]);
+    vx[i] = vx[i] + vdx[i];
+    vy[i] = vy[i] + vdy[i]; 
+    if ( vx[i] > width || vx[i] < 0 ) {
+       vdx[i] = -vdx[i]; 
+       vcorR[i] = random(0,255);
+       vcorG[i] = random(0,255);
+       vcorB[i] = random(0,255);
+    }
+    if ( vy[i] > height || vy[i] < 0 ) {
+       vdy[i] = -vdy[i]; 
+      
+    }
+    
+    ellipse(vx[i],vy[i],vtam[i],vtam[i]); 
+  }
+    textSize(52); 
+    fill(135,206,235);
+    text("PRESS ENTER", 250, 300);
+    if (keyIsDown(ENTER) ) {
+       tela = 2;  
+    } 
+}
+	if(tela == 2){
+		background (0);
+		if(vidas == 1) {	
 		//Gerar cenário
-		for(j = 0; j < cenario.length; j++) {
-			for(i = 0; i < cenario.length; i++) {
-				if(cenario[i][j] == "#") {
-					//image(img, j*tamBloco, i*tamBloco);
-					fill(200,250,255);
-					rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
+			for(j = 0; j < cenario.length; j++) {
+				for(i = 0; i < cenario.length; i++) {
+					if(cenario[i][j] == "#") {
+						//image(img, j*tamBloco, i*tamBloco);
+						fill(200,250,255);
+						rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
+				}
+			}
+		}
+   }
+
+		if(vidas == 5) {	
+				//Gerar cenário
+				for(j = 0; j < cenario.length; j++) {
+					for(i = 0; i < cenario.length; i++) {
+						if(cenario[i][j] == "#") {
+							//image(img, j*tamBloco, i*tamBloco);
+							fill(110,232,255);
+							rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
 				}
 			}
 		}
   }
   
-  if(vidas == 5) {	
-		//Gerar cenário
-		for(j = 0; j < cenario.length; j++) {
-			for(i = 0; i < cenario.length; i++) {
-				if(cenario[i][j] == "#") {
-					//image(img, j*tamBloco, i*tamBloco);
-					fill(110,232,255);
-					rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
+		if(vidas == 4) {	
+				//Gerar cenário
+				for(j = 0; j < cenario.length; j++) {
+					for(i = 0; i < cenario.length; i++) {
+						if(cenario[i][j] == "#") {
+							//image(img, j*tamBloco, i*tamBloco);
+							fill(300,250,255);
+							rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
 				}
 			}
 		}
   }
   
-  if(vidas == 4) {	
-		//Gerar cenário
-		for(j = 0; j < cenario.length; j++) {
-			for(i = 0; i < cenario.length; i++) {
-				if(cenario[i][j] == "#") {
-					//image(img, j*tamBloco, i*tamBloco);
-					fill(300,250,255);
-					rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
+		if(vidas == 3) {	
+				//Gerar cenário
+				for(j = 0; j < cenario.length; j++) {
+					for(i = 0; i < cenario.length; i++) {
+						if(cenario[i][j] == "#") {
+							//image(img, j*tamBloco, i*tamBloco);
+							fill(234,110,255);
+							rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
 				}
 			}
 		}
   }
   
-  if(vidas == 3) {	
-		//Gerar cenário
-		for(j = 0; j < cenario.length; j++) {
-			for(i = 0; i < cenario.length; i++) {
-				if(cenario[i][j] == "#") {
-					//image(img, j*tamBloco, i*tamBloco);
-					fill(234,110,255);
-					rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
+		if(vidas == 2) {	
+				//Gerar cenário
+				for(j = 0; j < cenario.length; j++) {
+					for(i = 0; i < cenario.length; i++) {
+						if(cenario[i][j] == "#") {
+							//image(img, j*tamBloco, i*tamBloco);
+							fill(180,10,255);
+							rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
 				}
 			}
 		}
   }
   
-  if(vidas == 2) {	
-		//Gerar cenário
-		for(j = 0; j < cenario.length; j++) {
-			for(i = 0; i < cenario.length; i++) {
-				if(cenario[i][j] == "#") {
-					//image(img, j*tamBloco, i*tamBloco);
-					fill(180,10,255);
-					rect(j*tamBloco,i*tamBloco,tamBloco,tamBloco);
-				}
-			}
-		}
-  }
+
    
   //função para o formato das estrelas  
   function star(x, y, radius1, radius2, npoints) {
@@ -161,20 +215,20 @@ function draw() {
   
   //movimentos da bola
 	if ((keyIsDown(LEFT_ARROW)) && (vidas!=0)){
-		posX-=4;
+		posX-=7;
 		pontos++;
 		}
 	if ((keyIsDown(RIGHT_ARROW)) && (vidas!=0)){
-		posX+=4;
+		posX+=7;
 		pontos++;
 		
     }
 	if ((keyIsDown(UP_ARROW)) && (vidas!=0)){
-		posY-=4;
+		posY-=7;
 	}
 
 	if ((keyIsDown(DOWN_ARROW)) && (vidas!=0)){
-		posY+=4;
+		posY+=7;
 	}
 
  //limites da bola dentro do cenario
@@ -385,5 +439,5 @@ function draw() {
 	    
 	
 	}
-	
+ }
 }
